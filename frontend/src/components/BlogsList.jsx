@@ -18,9 +18,9 @@ const BlogsList = () => {
   const localBlogs = useSelector(selectAllLocalBlogs);
   // sort blogs by date
 
-  let sortedBlogs = [];
+  let sortedBlogs = [{createdAt: new Date()}];
   try{
-    console.log(localBlogs)
+    console.log('localBlogs', localBlogs)
     sortedBlogs = localBlogs.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   } catch {
     sortedBlogs = localBlogs;
