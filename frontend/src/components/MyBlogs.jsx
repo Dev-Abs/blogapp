@@ -173,7 +173,7 @@ const MyBlogs = ({ toggleSuccess }) => {
     (state) => state.authorSpecificBlogs
   );
 
-  // const sortedBlogs = authorSpecificBlogs.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  const sortedBlogs = authorSpecificBlogs.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   const user = useSelector((state) => state.user.value);
   const [blogID, setBlogID] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -313,7 +313,7 @@ const MyBlogs = ({ toggleSuccess }) => {
             Error: {error.message || error} Please Reload Or check back later!!
           </div>
         )}
-        {authorSpecificBlogs.length > 0 ? (
+        {sortedBlogs.length > 0 ? (
           <div className="flex flex-wrap -mx-4">
             {sortedBlogs.map((blog) => (
               <div key={blog._id} className="w-full md:w-1/2 lg:w-1/3 px-4 mb-8">
