@@ -17,7 +17,15 @@ const BlogsList = () => {
   const { blogs, loading, error } = useSelector((state) => state.blogs);
   const localBlogs = useSelector(selectAllLocalBlogs);
   // sort blogs by date
-  // const sortedBlogs = localBlogs.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+  let sortedBlogs = [];
+  try{
+    console.log(localBlogs)
+    sortedBlogs = localBlogs.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  } catch {
+    sortedBlogs = localBlogs;
+  }
+
   const [blogLikes, setBlogLikes] = useState([]);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState({});
@@ -128,7 +136,7 @@ const BlogsList = () => {
         {loading && <div className="text-center text-gray-500">Loading...</div>}
         {error && <div className="text-center text-red-600">Error: {error.message || error}</div>}
         <div className="flex flex-wrap -mx-4">
-          {localBlogs.map((blog) => (
+          {sortedBlogs.map((blog) => (
             <div key={blog._id} className="w-full  md:w-1/2 lg:w-1/3 px-4 mb-8">
               <article className="h-[432px] custom-scrollbar overflow-auto hover:animate-background hover:bg-[length:400%_400%] hover:[animation-duration:_4s] bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-[3px]  transitionbg-white shadow-lg rounded-lg  transform transition-transform hover:scale-105 hover:shadow-xl hover:shadow-indigo-500/50">
                 <div className="relative p-6 rounded-[10px] bg-white !pt-20 sm:p-6 flex flex-col">
