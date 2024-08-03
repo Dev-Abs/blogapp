@@ -8,7 +8,6 @@ const {errorHandler} = require('./middleware/errorMiddleware.js');
 const app = express();
 
 connectDB();
-app.use(cors());
 app.use(cors({
     origin: ['https://blogapp-home.vercel.app/'],
     credentials: true
