@@ -13,7 +13,7 @@ const initialState = {
 // Thunks for asynchronous operations
 export const fetchBlogs = createAsyncThunk("blogs/fetchBlogs", async (_, { rejectWithValue }) => {
     try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/blogs`)
+        const response = await axios.get(`http://localhost:5000/api/blogs`)
         // initialState.localBlogs = [...response.data]
         return response.data
     } catch (error) {
@@ -23,7 +23,7 @@ export const fetchBlogs = createAsyncThunk("blogs/fetchBlogs", async (_, { rejec
 
 export const addComment = createAsyncThunk("blogs/addComment", async ({ blogId, content }, { rejectWithValue }) => {
     try {
-        const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/blogs/${blogId}/comment`, { content }, {
+        const response = await axios.post(`${NodeJS.process.env.REACT_APP_BASE_URL}/api/blogs/${blogId}/comment`, { content }, {
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${localStorage.getItem('token')}`
