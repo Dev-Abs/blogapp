@@ -20,6 +20,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/blogs', require('./routes/blogRoutes.js'));
 app.use('/api/users', require('./routes/userRoutes.js'));
+app.use('/', (req, res) => {
+  res.send('API is running...');
+});
 
 
 app.use(errorHandler);
