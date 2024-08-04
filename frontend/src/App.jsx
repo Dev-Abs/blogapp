@@ -13,17 +13,6 @@ import Footer from "./components/Footer";
 function App() {
   const [alert,setAlert] = useState(false)
   const [message,setMessage] = useState("")
-  const [darkMode, setDarkMode] = useState(false)
-
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode)
-    console.log(darkMode)
-    if(darkMode){
-      document.documentElement.classList.add('dark')
-    }else{
-      document.documentElement.classList.remove('dark')
-    }
-  }
 
   const toggleSuccess = (msg) => {
     setMessage(msg);
@@ -46,7 +35,7 @@ function App() {
 
     <Router>
       <div className="flex flex-col min-h-screen bg-gray-100">
-      <Navbar toggleDarkMode={toggleDarkMode} />
+      <Navbar />
         <div className="flex-grow">
       {alert && <SuccessAlert message={message } />}
     <Routes>
