@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/blog.png";
+import DarkModeToggle from "./DarkModeToggle";
 
 const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -39,7 +40,7 @@ const Navbar = () => {
   return (
     <div
       className={`fixed top-0 left-0 right-0 z-50 p-4 flex justify-between items-center transition-all duration-500 ease-in-out ${
-        navbarBackground ? "bg-white shadow-lg" : "bg-transparent"
+        navbarBackground ? "bg-white  shadow-lg" : "bg-transparent"
       }`}
     >
       <div className="flex justify-center items-center gap-4">
@@ -79,6 +80,8 @@ const Navbar = () => {
               Sign Up
             </Link>
           )}
+          {/* enable dark mode */}
+          <DarkModeToggle />
         </div>
       </div>
       <button
