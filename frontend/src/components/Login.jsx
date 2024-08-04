@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../features/users/loginSlice";
 import logo from "../assets/blog.png";
 import { Link, useNavigate } from "react-router-dom";
+import SuccessAlert from "./SuccessAlert";
+import DangerAlert from "./DangerAlert";
 
 const Login = ({toggleSuccess}) => {
   const dispatch = useDispatch();
@@ -24,6 +26,9 @@ const Login = ({toggleSuccess}) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(loginUser(formData));
+    if(!user) {
+      navigate("/signin");
+    }
   };
 
   const navigate = useNavigate();
@@ -149,7 +154,7 @@ const Login = ({toggleSuccess}) => {
               href="#"
               className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
             >
-              Error: {error}
+              {<DangerAlert msg={'Error: Invalid Credentials'} />}
             </a>
           )}
         </div>
