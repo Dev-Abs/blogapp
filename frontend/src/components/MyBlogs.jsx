@@ -48,9 +48,9 @@ const DrawerForm = ({ blogID, show, onClose, toggleSuccess }) => {
   return (
     <div
       id="drawer-form"
-      className={`fixed top-0 left-0 z-40 h-screen p-6 overflow-y-auto transition-transform ${
+      className={`fixed top-32 left-0 z-40 h-screen p-6 overflow-y-auto transition-transform ${
         show ? "translate-x-0" : "-translate-x-full"
-      } bg-white w-80 md:w-[40%] md:h-[70%] shadow-lg border border-gray-300`}
+      } bg-white w-96 md:w-[40%] md:h-[70%] shadow-lg border border-gray-300`}
       tabIndex="-1"
       aria-labelledby="drawer-form-label"
     >
@@ -173,14 +173,7 @@ const MyBlogs = ({ toggleSuccess }) => {
     (state) => state.authorSpecificBlogs
   );
 
-  let sortedBlogs = [];
-  try{
-    console.log(authorSpecificBlogs)
-    sortedBlogs = authorSpecificBlogs.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  } catch {
-    sortedBlogs = authorSpecificBlogs
-  }
-    
+  const sortedBlogs = authorSpecificBlogs.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   const user = useSelector((state) => state.user.value);
   const [blogID, setBlogID] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -193,7 +186,10 @@ const MyBlogs = ({ toggleSuccess }) => {
     dispatch(getUser());
   }, [dispatch]);
 
+  const [token, setToken] = useState(localStorage.getItem("token"));
+
   useEffect(() => {
+    setToken(localStorage.getItem("token"));
     if (authorSpecificBlogs.length === 0) return;
     setBlogLikes(
       authorSpecificBlogs.map((blog) => ({
@@ -292,7 +288,7 @@ const MyBlogs = ({ toggleSuccess }) => {
   const deleteBlogHandle = (blogId) => {
     dispatch(deleteBlog(blogId));
     toggleSuccess("Blog Deleted Successfully");
-    navigate("/myblogs");
+    window.location.reload();
   };
   const handleLiked = (blogId) => {
     const blogLike = blogLikes.find((blog) => blog.blogId === blogId);
@@ -315,16 +311,20 @@ const MyBlogs = ({ toggleSuccess }) => {
           </div>
         </div>
         {loading && <div>Loading...</div>}
-        {error && (
-          <div>
-            Error: {error.message || error} Please Reload Or check back later!!
+        {(!token) ? 
+        (
+          <div className="text-center mx-auto mb-[60px] lg:mb-20 max-w-[710px]">
+            <span className="font-bold text-3xl z-10 text-primary block bg-gradient-to-r from-teal-400 to-blue-500 text-transparent bg-clip-text">
+              Error Fetching Blogs
+            </span>
           </div>
-        )}
+        ) : null
+      }
         {sortedBlogs.length > 0 ? (
           <div className="flex flex-wrap -mx-4">
             {sortedBlogs.map((blog) => (
               <div key={blog._id} className="w-full md:w-1/2 lg:w-1/3 px-4 mb-8">
-                              <article className="h-[432px] m-5 custom-scrollbar overflow-auto hover:animate-background hover:bg-[length:400%_400%] hover:[animation-duration:_4s] bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-[3px]  transitionbg-white shadow-lg rounded-lg  transform transition-transform hover:scale-105 hover:shadow-xl hover:shadow-indigo-500/50">
+                              <article className="h-[432px] custom-scrollbar overflow-auto hover:animate-background hover:bg-[length:400%_400%] hover:[animation-duration:_4s] bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-[3px]  transitionbg-white shadow-lg rounded-lg  transform transition-transform hover:scale-105 hover:shadow-xl hover:shadow-indigo-500/50">
                 <div className="relative p-6 ounded-[10px] bg-white !pt-20 sm:p-6 flex flex-col">
                   <span className="absolute top-4 left-4 bg-indigo-500 text-white text-xs font-semibold px-2 py-1 rounded">
                     {blog.categories || "Unknown Category"}
@@ -336,7 +336,7 @@ const MyBlogs = ({ toggleSuccess }) => {
                     {new Date(blog.createdAt).toLocaleDateString() + ' ' +  new Date(blog.createdAt).toTimeString().slice(0, 5)}
 
                   </time>
-                  <div className="mt-6 flex items-center gap-x-4">
+                  <div className="mt-6 flex items-center gap-x-4 justify-between ">
                       <div>
                         <button
                           type="button"
@@ -352,12 +352,19 @@ const MyBlogs = ({ toggleSuccess }) => {
                         >
                           Delete
                         </button>
-
                       </div>
+                      {handleLiked(blog._id) && ( 
+                      <p
+                        className="flex items-center text-green-500 font-semibold"
+                      >
+                        Liked
+                      </p>
+                    )}
                     </div>
                   <h2 className="mt-8 text-2xl font-bold text-gray-800 hover:text-indigo-600 transition-colors duration-300">{blog.title}</h2>
                   <p className="mt-4 text-gray-600">{blog.body}</p>
                   <div className="mt-6 justify-between flex items-center gap-x-4">
+                    <div className="flex justify-center items-center gap-x-4">
                     <button
                       onClick={() => handleLike(blog._id)}
                       className="flex items-center text-indigo-500 hover:text-indigo-700 transition-colors duration-300"
@@ -372,6 +379,7 @@ const MyBlogs = ({ toggleSuccess }) => {
                         <FaThumbsDown className="mr-1" /> Unlike
                       </button>
                     )}
+                    </div>
                     <div className="">
                     <span className="mt-0.5 mr-5 p-2 bg-indigo-100 text-indigo-800 text-sm font-medium rounded-lg ">
                         By {blog.author !== null ? blog.author.name : "Unknown"}

@@ -8,6 +8,7 @@ import BlogList from "./components/BlogsList";
 import CreateBlog from "./components/CreateBlog";
 import Navbar from "./components/Navbar";
 import MyBlogs from "./components/MyBlogs";
+import Footer from "./components/Footer";
 
 function App() {
   const [alert,setAlert] = useState(false)
@@ -33,7 +34,9 @@ function App() {
     // </>
 
     <Router>
+      <div className="flex flex-col min-h-screen bg-gray-100">
       <Navbar />
+        <div className="flex-grow">
       {alert && <SuccessAlert message={message } />}
     <Routes>
     <Route path="/signup" element={<Signup toggleSuccess={toggleSuccess}/>} />
@@ -42,6 +45,9 @@ function App() {
     <Route path="/createblog" element={<CreateBlog toggleSuccess={toggleSuccess} />} />
     <Route path="/signin" element={<Login toggleSuccess={toggleSuccess} />} />
     </Routes>
+    </div>
+    <Footer />
+    </div>
   </Router>
   )
 }
