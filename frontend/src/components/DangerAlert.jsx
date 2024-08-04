@@ -1,4 +1,3 @@
-import { set } from 'mongoose';
 import React, {useEffect, useState} from 'react'
 
 const DangerAlert = ({msg}) => {
