@@ -9,6 +9,7 @@ import CreateBlog from "./components/CreateBlog";
 import Navbar from "./components/Navbar";
 import MyBlogs from "./components/MyBlogs";
 import Footer from "./components/Footer";
+import BlogPage from "./components/BlogPage";
 
 function App() {
   const [alert,setAlert] = useState(false)
@@ -44,6 +45,8 @@ function App() {
     <Route path="/myblogs" element={<MyBlogs toggleSuccess={toggleSuccess} />} />
     <Route path="/createblog" element={<CreateBlog toggleSuccess={toggleSuccess} />} />
     <Route path="/signin" element={<Login toggleSuccess={toggleSuccess} />} />
+    <Route path="/blog/:id" component={BlogPage} element={<BlogPage />} />
+
     </Routes>
     </div>
     <Footer />

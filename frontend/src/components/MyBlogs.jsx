@@ -361,8 +361,8 @@ const MyBlogs = ({ toggleSuccess }) => {
                       </p>
                     )}
                     </div>
-                  <h2 className="mt-8 text-2xl font-bold text-gray-800 hover:text-indigo-600 transition-colors duration-300">{blog.title}</h2>
-                  <p className="mt-4 text-gray-600">{blog.body}</p>
+                  <h2 className="mt-8 text-2xl font-bold text-gray-800 hover:text-indigo-600 transition-colors duration-300 hover:cursor-pointer">{blog.title}</h2>
+                  <p className="mt-4 text-gray-600">{blog.body.length > 100 ? blog.body.slice(0, 100) + "..." : blog.body}</p>
                   <div className="mt-6 justify-between flex items-center gap-x-4">
                     <div className="flex justify-center items-center gap-x-4">
                     <button

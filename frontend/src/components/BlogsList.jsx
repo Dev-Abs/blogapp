@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   fetchBlogs,
   addComment,
@@ -13,6 +14,7 @@ import { getUser } from "../features/users/getUserSlice";
 
 const BlogsList = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.user.value);
   const { blogs, loading, error } = useSelector((state) => state.blogs);
   const localBlogs = useSelector(selectAllLocalBlogs);
@@ -116,6 +118,10 @@ const BlogsList = () => {
     dispatch(unlikeBlog(blogId));
   };
 
+  const BlogClickHandle = (blog) => {
+    navigate(`/blog/${blog._id}`);
+  }
+
   return (
     <section className="pt-16 pb-24 bg-gray-100">
       <div className="container mx-auto">
@@ -153,8 +159,11 @@ const BlogsList = () => {
                   >
                     {new Date(blog.createdAt).toLocaleDateString() + ' ' +  new Date(blog.createdAt).toTimeString().slice(0, 5)}
                   </time>
-                  <h2 className="mt-8 text-2xl font-bold text-gray-800 hover:text-indigo-600 transition-colors duration-300">{blog.title}</h2>
-                  <p className="mt-4 text-gray-600">{blog.body}</p>
+                  <h2 onClick={() => BlogClickHandle(blog)} 
+                  className="mt-8 text-2xl font-bold text-gray-800 hover:text-indigo-600 transition-colors duration-300 hover:cursor-pointer">{blog.title}</h2>
+                  <p 
+                  onClick={() => BlogClickHandle(blog)} 
+                  className="mt-4 text-gray-600 hover:cursor-pointer">{blog.body.length > 100 ? blog.body.slice(0, 100) + "..." : blog.body}</p>
                   <div className="mt-6 flex items-center gap-x-4">
                     <button
                       onClick={() => handleLike(blog._id)}
