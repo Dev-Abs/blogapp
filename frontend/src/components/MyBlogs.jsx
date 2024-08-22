@@ -287,8 +287,7 @@ const MyBlogs = ({ toggleSuccess }) => {
 
   const deleteBlogHandle = (blogId) => {
     dispatch(deleteBlog(blogId));
-    toggleSuccess("Blog Deleted Successfully");
-    window.location.reload();
+    toggleSuccess("Blog Deleted Successfully! Reload to see.");
   };
   const handleLiked = (blogId) => {
     const blogLike = blogLikes.find((blog) => blog.blogId === blogId);
