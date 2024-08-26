@@ -48,9 +48,9 @@ const DrawerForm = ({ blogID, show, onClose, toggleSuccess }) => {
   return (
     <div
       id="drawer-form"
-      className={`fixed top-20 lg:top-32 left-0 z-40 h-96 lg:h-screen p-6 overflow-y-auto transition-transform ${
+      className={`fixed top-20 lg:top-32 left-0 z-40 h-screen lg:h-[600px] p-6 overflow-y-auto transition-transform ${
         show ? "translate-x-0" : "-translate-x-full"
-      } bg-white w-80 lg:w-96 md:w-[40%] md:h-[70%] shadow-lg border border-gray-300`}
+      } bg-white w-screen md:w-[40%] md:h-[70%] shadow-lg border border-gray-300`}
       tabIndex="-1"
       aria-labelledby="drawer-form-label"
     >
