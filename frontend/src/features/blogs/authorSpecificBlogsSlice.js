@@ -26,6 +26,21 @@ export const fetchAuthorSpecificBlogs = createAsyncThunk("authorSpecificBlogs/fe
 }
 )
 
+// get blogs by author id thunk
+export const fetchAuthorSpecificBlogsById = createAsyncThunk("authorSpecificBlogs/fetchAuthorSpecificBlogsById", async (id
+    , { rejectWithValue }) => {
+    try {
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/blogs/author/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+        return response.data
+    } catch (error) {
+        return rejectWithValue(error.response ? error.response.data : { message: error.message })
+    }
+})
+
 
 // update blog thunk
 export const updateBlog = createAsyncThunk("authorSpecificBlogs/updateBlog", async (data, { rejectWithValue }) => {
@@ -99,6 +114,17 @@ const authorSpecificBlogsSlice = createSlice({
             state.authorSpecificBlogs = state.authorSpecificBlogs.filter(blog => blog._id !== action.payload._id)
         })
         builder.addCase(deleteBlog.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload.message
+        })
+        builder.addCase(fetchAuthorSpecificBlogsById.pending, (state, action) => {
+            state.loading = true
+        })
+        builder.addCase(fetchAuthorSpecificBlogsById.fulfilled, (state, action) => {
+            state.loading = false
+            state.authorSpecificBlogs = action.payload
+        })
+        builder.addCase(fetchAuthorSpecificBlogsById.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload.message
         })

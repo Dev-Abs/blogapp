@@ -167,7 +167,6 @@ const DrawerForm = ({ blogID, show, onClose, toggleSuccess }) => {
 
 const MyBlogs = ({ toggleSuccess }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { authorSpecificBlogs, loading, error } = useSelector(
     (state) => state.authorSpecificBlogs
   );
@@ -179,7 +178,6 @@ const MyBlogs = ({ toggleSuccess }) => {
   const [blogID, setBlogID] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [blogLikes, setBlogLikes] = useState([]);
-  const [comment, setComment] = useState("");
   const [comments, setComments] = useState({});
 
   useEffect(() => {
@@ -198,82 +196,15 @@ const MyBlogs = ({ toggleSuccess }) => {
         likes: blog.likes,
       }))
     );
-
-    const initialComments = {};
-    authorSpecificBlogs.forEach((blog) => {
-      initialComments[blog._id] = blog.comments || [];
-    });
-    setComments(initialComments);
   }, [authorSpecificBlogs]);
-
-  const handleAddComment = (blogId, content) => {
-    dispatch(addComment({ blogId, content }));
-    setComments((prevComments) => ({
-      ...prevComments,
-      [blogId]: [...prevComments[blogId], { userId: user._id, content }],
-    }));
-    setComment("");
-  };
 
   const getComments = (blogId) => {
     return comments[blogId] || [];
   };
 
-  const handleLike = (blogId) => {
-    const updatedBlogLikes = blogLikes.map((blog) => {
-      if (blog.blogId === blogId) {
-        const alreadyLiked = blog.likes.some(
-          (like) => like.userId === user._id
-        );
-        if (alreadyLiked) {
-          return {
-            ...blog,
-            likes: blog.likes.filter((like) => like.userId !== user._id),
-          };
-        } else {
-          return {
-            ...blog,
-            likes: [...blog.likes, { userId: user._id }],
-          };
-        }
-      }
-      return blog;
-    });
-    setBlogLikes(updatedBlogLikes);
-    if (
-      updatedBlogLikes
-        .find((blog) => blog.blogId === blogId)
-        .likes.some((like) => like.userId === user._id)
-    ) {
-      dispatch(likeBlog(blogId));
-      dispatch(likeBlogLocally(blogId));
-    } else {
-      dispatch(unlikeBlog(blogId));
-    }
-  };
-
   const getLikes = (blogId) => {
     const blog = blogLikes.find((blog) => blog.blogId === blogId);
     return blog ? blog.likes.length : 0;
-  };
-
-  const handleUnlike = (blogId) => {
-    const updatedBlogLikes = blogLikes.map((blog) => {
-      if (blog.blogId === blogId) {
-        const alreadyLiked = blog.likes.some(
-          (like) => like.userId === user._id
-        );
-        if (alreadyLiked) {
-          return {
-            ...blog,
-            likes: blog.likes.filter((like) => like.userId !== user._id),
-          };
-        }
-      }
-      return blog;
-    });
-    setBlogLikes(updatedBlogLikes);
-    dispatch(unlikeBlog(blogId));
   };
 
   const handleOpenDrawer = (ID) => () => {
@@ -289,16 +220,6 @@ const MyBlogs = ({ toggleSuccess }) => {
   const deleteBlogHandle = (blogId) => {
     dispatch(deleteBlog(blogId));
     toggleSuccess("Blog Deleted Successfully! Reload to see.");
-  };
-  const handleLiked = (blogId) => {
-    const blogLike = blogLikes.find((blog) => blog.blogId === blogId);
-    if (blogLike) {
-      return blogLike.likes.some((like) => like.userId === user._id);
-    }
-    return false;
-  };
-  const BlogClickHandle = (blog) => {
-    navigate(`/blog/${blog._id}`);
   };
 
   return (
@@ -329,11 +250,11 @@ const MyBlogs = ({ toggleSuccess }) => {
                 className="w-full md:w-1/2 lg:w-1/3 px-4 mb-16"
               >
                 <article className="h-[470px] bg-white custom-scrollbar hover:animate-background hover:bg-[length:400%_400%] hover:[animation-duration:_4s] transitionbg-white shadow-lg rounded-lg  transform transition-transform hover:scale-105 hover:shadow-xl hover:shadow-indigo-500/50">
-                <img
-                  src={blog.featuredImage || "default_image_url.jpg"}
-                  alt={blog.title}
-                  className="w-full h-48 object-cover rounded-t-lg bg-gray-300"
-                />
+                  <img
+                    src={blog.featuredImage || "default_image_url.jpg"}
+                    alt={blog.title}
+                    className="w-full h-48 object-cover rounded-t-lg bg-gray-300"
+                  />
                   <div className="relative p-3 ounded-[10px] bg-white !pt-20 sm:p-6 flex flex-col">
                     <span className="absolute top-4 left-4 bg-slate-500 text-white text-xs font-semibold px-2 py-1 rounded">
                       {blog.categories || "Unknown Category"}
@@ -364,9 +285,13 @@ const MyBlogs = ({ toggleSuccess }) => {
                         </button>
                       </div>
                       <div className="self-end flex mb-4">
-        <p className="text-gray-500">{getLikes(blog._id)} likes</p>
-        <p className="text-gray-500 ml-4">{getComments(blog._id).length} comments</p>
-        </div>
+                        <p className="text-gray-500">
+                          {getLikes(blog._id)} likes
+                        </p>
+                        <p className="text-gray-500 ml-4">
+                          {getComments(blog._id).length} comments
+                        </p>
+                      </div>
                     </div>
                     <h2
                       onClick={() => BlogClickHandle(blog)}

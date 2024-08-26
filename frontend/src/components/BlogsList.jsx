@@ -89,6 +89,10 @@ const BlogsList = ({ toggleDanger }) => {
     navigate(`/blog/${blog._id}`);
   };
 
+  const AuthorClickHandle = (authorId, authorName) => {
+    navigate(`/author/${authorId}`, { state: { authorId, authorName } });
+  };
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -125,7 +129,11 @@ const BlogsList = ({ toggleDanger }) => {
                   </span>
                   <div className="flex justify-between items-center">
                     <span className="self-start p-2 bg-slate-100 text-slate-500 text-sm font-medium rounded-lg">
-                      By {blog.author !== null ? blog.author.name : "Unknown"}
+                      By <span onClick={() => {
+                        AuthorClickHandle(blog.author !== null ? blog.author._id : "Unknown", blog.author !== null ? blog.author.name : "Unknown")
+                      }}
+                      className="text-blue-500 cursor-pointer hover:text-blue-700 transition-colors duration-300"
+                      > {blog.author !== null ? blog.author.name : "Unknown"} </span>
                     </span>
                     <div className="flex items-center gap-x-4">
                       <button

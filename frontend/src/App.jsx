@@ -2,7 +2,6 @@ import { useState } from "react";
 import Login from "./components/Login"
 import Signup from "./components/SignUp"
 import SuccessAlert from "./components/SuccessAlert";
-import UserProfile from "./components/UserProfle"
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import BlogList from "./components/BlogsList";
 import CreateBlog from "./components/CreateBlog";
@@ -11,6 +10,7 @@ import MyBlogs from "./components/MyBlogs";
 import Footer from "./components/Footer";
 import BlogPage from "./components/BlogPage";
 import DangerAlert from "./components/DangerAlert";
+import AuthorSpecificBlogs from "./components/AuthorSpecificBlogs";
 
 function App() {
   const [alert,setAlert] = useState(false)
@@ -54,7 +54,7 @@ function App() {
     <Route path="/createblog" element={<CreateBlog toggleSuccess={toggleSuccess} />} />
     <Route path="/signin" element={<Login toggleSuccess={toggleSuccess} />} />
     <Route path="/blog/:id" component={BlogPage} element={<BlogPage />} />
-
+    <Route path="/author/:authorId" element={<AuthorSpecificBlogs />} />
     </Routes>
     </div>
     <Footer />
