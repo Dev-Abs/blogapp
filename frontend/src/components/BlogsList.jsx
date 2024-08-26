@@ -6,6 +6,8 @@ import { FaThumbsUp, FaArrowUp } from "react-icons/fa";
 import { likeBlogLocally } from "../features/blogs/blogsSlice";
 import { selectAllLocalBlogs } from "../features/blogs/blogsSlice";
 import { getUser } from "../features/users/getUserSlice";
+import imagePlaceholder from "../assets/image_placeholder2.jpeg";
+
 
 const BlogsList = ({ toggleDanger }) => {
   const dispatch = useDispatch();
@@ -119,7 +121,7 @@ const BlogsList = ({ toggleDanger }) => {
             <div key={blog._id} className="w-full md:w-1/2 lg:w-1/3 px-4 mb-20">
               <article className="h-[500px] custom-scrollbar bg-white hover:animate-background hover:bg-[length:400%_400%] hover:[animation-duration:_4s]  p-[3px]  transitionbg-white shadow-lg rounded-lg  transform transition-transform hover:scale-105 hover:shadow-xl hover:shadow-indigo-500/50">
                 <img
-                  src={blog.featuredImage || "default_image_url.jpg"}
+                  src={blog.featuredImage || imagePlaceholder}
                   alt={blog.title}
                   className="w-full h-48 object-cover rounded-t-lg bg-gray-300"
                 />

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import imagePlaceholder from "../assets/image_placeholder2.jpeg";
 import {
   fetchBlogs,
   addComment,
@@ -96,7 +97,7 @@ const BlogPage = () => {
         {/* Blog Image */}
         <div className="flex-shrink-0">
           <img
-            src={blog.featuredImage}
+            src={blog.featuredImage || imagePlaceholder}
             alt={blog.title}
             className="w-full h-auto lg:max-w-sm rounded-lg object-cover"
           />

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAuthorSpecificBlogsById } from "../features/blogs/authorSpecificBlogsSlice";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import imagePlaceholder from "../assets/image_placeholder2.jpeg";
 
 const AuthorSpecificBlogs = () => {
   const { authorId } = useParams();
@@ -57,7 +58,7 @@ const AuthorSpecificBlogs = () => {
               >
                 <article className="h-[470px] bg-white custom-scrollbar hover:animate-background hover:bg-[length:400%_400%] hover:[animation-duration:_4s] transitionbg-white shadow-lg rounded-lg  transform transition-transform hover:scale-105 hover:shadow-xl hover:shadow-indigo-500/50">
                   <img
-                    src={blog.featuredImage || "default_image_url.jpg"}
+                    src={blog.featuredImage || imagePlaceholder}
                     alt={blog.title}
                     className="w-full h-48 object-cover rounded-t-lg bg-gray-300"
                   />
