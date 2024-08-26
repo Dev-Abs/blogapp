@@ -128,7 +128,7 @@ const BlogsList = ({ toggleDanger }) => {
     <section className="pt-16 pb-24 bg-slate-200">
       <div className="container mx-auto">
         <header className="text-center mb-12">
-          <h1 className="text-4xl font-extrabold text-gray-800 mb-4">
+          <h1 className="text-4xl font-extrabold text-gray-800 my-4">
             Our Latest Blogs
           </h1>
           <p className="text-lg text-gray-600">

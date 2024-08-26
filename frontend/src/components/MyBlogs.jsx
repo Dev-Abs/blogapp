@@ -334,7 +334,7 @@ const MyBlogs = ({ toggleSuccess }) => {
                   alt={blog.title}
                   className="w-full h-48 object-cover rounded-t-lg bg-gray-300"
                 />
-                  <div className="relative ounded-[10px] bg-white !pt-20 sm:p-6 flex flex-col">
+                  <div className="relative p-3 ounded-[10px] bg-white !pt-20 sm:p-6 flex flex-col">
                     <span className="absolute top-4 left-4 bg-slate-500 text-white text-xs font-semibold px-2 py-1 rounded">
                       {blog.categories || "Unknown Category"}
                     </span>
@@ -351,14 +351,14 @@ const MyBlogs = ({ toggleSuccess }) => {
                         <button
                           type="button"
                           onClick={handleOpenDrawer(blog._id)}
-                          className="focus:outline-none text-white bg-green-600 font-medium rounded-lg text-sm px-5 py-2 me-2 mb-2 hover:bg-green-500"
+                          className="focus:outline-none text-white bg-green-600 font-small rounded-lg text-xs px-2 lg:px-5 py-2 me-2 mb-2 hover:bg-green-500"
                         >
                           Update
                         </button>
                         <button
                           type="button"
                           onClick={() => deleteBlogHandle(blog._id)}
-                          className="focus:outline-none text-white bg-red-600 font-medium rounded-lg text-sm px-5 py-2 me-2 mb-2 hover:bg-red-500"
+                          className="focus:outline-none text-white bg-red-600 font-medium rounded-lg text-xs px-2 lg:px-5 py-2 me-2 mb-2 hover:bg-red-500"
                         >
                           Delete
                         </button>
