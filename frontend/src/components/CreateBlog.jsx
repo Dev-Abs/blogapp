@@ -1,11 +1,17 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch} from "react-redux";
 import { createBlog } from "../features/blogs/createBlogSlice";
 import { useNavigate } from "react-router";
 
 const CreateBlog = ({toggleSuccess}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  let token = localStorage.getItem("token");
+
+  useEffect(() => {
+    token = localStorage.getItem("token");
+  }, []);
   const [blog, setBlog] = React.useState({
     title: "",
     categories: "",
@@ -30,7 +36,8 @@ const CreateBlog = ({toggleSuccess}) => {
   };
 
   return (
-    <section className="py-20 bg-gray-50">
+      token ? 
+        <section className="pt-20 bg-slate-200">
       <div className="container mx-auto px-4">
         <div className="max-w-2xl mx-auto text-center mb-16">
           <h2 className="text-4xl font-extrabold leading-tight text-gray-900">
@@ -40,7 +47,7 @@ const CreateBlog = ({toggleSuccess}) => {
             Share your thoughts with the world
           </p>
         </div>
-        <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+        <div className="max-w-2xl mx-auto mb-[40px] p-8 mt-[-40px] rounded-lg shadow-lg bg-slate-100">
           <form onSubmit={handleSubmit}>
             <div className="flex flex-wrap -mx-4 mb-8">
               <div className="w-full px-4 mb-8">
@@ -56,7 +63,7 @@ const CreateBlog = ({toggleSuccess}) => {
                   type="text"
                   id="title"
                   name="title"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                  className="mt-1 block bg-slate-300 p-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                   placeholder="Enter your blog title"
                 />
               </div>
@@ -73,7 +80,7 @@ const CreateBlog = ({toggleSuccess}) => {
                   type="text"
                   id="categories"
                   name="categories"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                  className="mt-1 block bg-slate-300 p-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                   placeholder="Enter categories separated by commas"
                 />
               </div>
@@ -90,7 +97,7 @@ const CreateBlog = ({toggleSuccess}) => {
                   type="text"
                   id="featuredImage"
                   name="featuredImage"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                  className="mt-1 block bg-slate-300 p-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                   placeholder="Enter image URL"
                 />
               </div>
@@ -106,8 +113,8 @@ const CreateBlog = ({toggleSuccess}) => {
                   value={blog.body}
                   id="body"
                   name="body"
-                  rows={6}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                  rows={2}
+                  className="mt-1 bg-slate-300 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                   placeholder="Write your blog content here..."
                 />
               </div>
@@ -123,7 +130,11 @@ const CreateBlog = ({toggleSuccess}) => {
           </form>
         </div>
       </div>
-    </section>
+    </section> : 
+    <div className="flex justify-center items-center h-screen bg-slate-200">
+      <h1 className="text-3xl font-bold text-gray-800">You need to login to create a blog</h1>
+    </div>
+    
   );
 };
 

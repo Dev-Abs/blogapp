@@ -69,9 +69,6 @@ const BlogsList = ({ toggleDanger }) => {
     return false;
   };
 
-  const getComments = (blogId) => {
-    return comments[blogId] || [];
-  };
 
   const handleLike = (blogId) => {
     const updatedBlogLikes = blogLikes.map((blog) => {
@@ -128,7 +125,7 @@ const BlogsList = ({ toggleDanger }) => {
 
 
   return (
-    <section className="pt-16 pb-24 bg-gray-100">
+    <section className="pt-16 pb-24 bg-slate-200">
       <div className="container mx-auto">
         <header className="text-center mb-12">
           <h1 className="text-4xl font-extrabold text-gray-800 mb-4">
@@ -146,30 +143,37 @@ const BlogsList = ({ toggleDanger }) => {
         )}
         <div className="flex flex-wrap -mx-4">
           {sortedBlogs.map((blog) => (
-            <div key={blog._id} className="w-full  md:w-1/2 lg:w-1/3 px-4 mb-8">
-              <article className="h-[432px] custom-scrollbar overflow-auto hover:animate-background hover:bg-[length:400%_400%] hover:[animation-duration:_4s]  p-[3px]  transitionbg-white shadow-lg rounded-lg  transform transition-transform hover:scale-105 hover:shadow-xl hover:shadow-indigo-500/50">
+            <div key={blog._id} className="w-full md:w-1/2 lg:w-1/3 px-4 mb-20 ">
+              <article className="h-[500px] custom-scrollbar bg-white hover:animate-background hover:bg-[length:400%_400%] hover:[animation-duration:_4s]  p-[3px]  transitionbg-white shadow-lg rounded-lg  transform transition-transform hover:scale-105 hover:shadow-xl hover:shadow-indigo-500/50">
               <img
-                  src={blog.image || "default_image_url.jpg"}
+                  src={blog.featuredImage || "default_image_url.jpg"}
                   alt={blog.title}
-                  className="w-full h-48 object-cover rounded-t-lg"
+                  className="w-full h-48 object-cover rounded-t-lg bg-gray-300"
                 />
                 <div className="relative p-6 rounded-[10px] bg-white !pt-20 sm:p-6 flex flex-col">
-                  <span className="absolute top-4 left-4 bg-indigo-500 text-white text-xs font-semibold px-2 py-1 rounded">
+                  <span className="absolute top-4 left-4 bg-slate-500 text-white text-xs font-semibold px-2 py-1 rounded">
                     {blog.categories || "Unknown Category"}
                   </span>
                   <div className="flex justify-between items-center ">
-                    <span className="self-start p-2 bg-indigo-100 text-indigo-800 text-sm font-medium rounded-lg ">
+                    <span className="self-start p-2 bg-slate-100 text-slate-500 text-sm font-medium rounded-lg ">
                       By {blog.author !== null ? blog.author.name : "Unknown"}
                     </span>
-                    {handleLiked(blog._id) && (
-                      <p className="flex items-center text-green-500 font-semibold text-xl">
-                        Liked
-                      </p>
-                    )}
+                    <div className="flex items-center gap-x-4">
+                    <button
+                      onClick={() => {
+                        user._id
+                          ? handleLike(blog._id)
+                          : toggleDanger();
+                      }}
+                      className={`flex items-center ${handleLiked(blog._id) ? 'text-blue-500' : 'text-gray-500'} hover:text-indigo-700 transition-colors duration-300`}
+                    >
+                      <FaThumbsUp className="mr-1" /> {getLikes(blog._id)}
+                    </button>
+                  </div>
                   </div>
                   <time
                     dateTime={new Date(blog.createdAt).toISOString()}
-                    className="absolute top-4 right-4 bg-indigo-500 text-white text-xs px-2 py-1 rounded"
+                    className="absolute top-4 right-4 bg-slate-500 text-white text-xs px-2 py-1 rounded"
                   >
                     {new Date(blog.createdAt).toLocaleDateString() +
                       " " +
@@ -185,81 +189,10 @@ const BlogsList = ({ toggleDanger }) => {
                     onClick={() => BlogClickHandle(blog)}
                     className="mt-4 text-gray-600 hover:cursor-pointer"
                   >
-                    {blog.body.length > 100
-                      ? blog.body.slice(0, 100) + "..."
+                    {blog.body.length > 50
+                      ? blog.body.slice(0, 50) + "..."
                       : blog.body}
                   </p>
-                  <div className="mt-6 flex items-center gap-x-4">
-                    <button
-                      onClick={() => {
-                        user._id
-                          ? handleLike(blog._id)
-                          : toggleDanger();
-                      }}
-                      className="flex items-center text-indigo-500 hover:text-indigo-700 transition-colors duration-300"
-                    >
-                      <FaThumbsUp className="mr-1" /> {getLikes(blog._id)}
-                    </button>
-                    {handleLiked(blog._id) && (
-                      <button
-                        onClick={() => handleUnlike(blog._id)}
-                        className="flex items-center text-red-500 hover:text-red-700 transition-colors duration-300"
-                      >
-                        <FaThumbsDown className="mr-1" /> Unlike
-                      </button>
-                    )}
-                  </div>
-                  <div className="mt-6">
-                    <h3 className="text-sm font-medium text-gray-800">
-                      Comments
-                    </h3>
-                    <div className="mt-2 space-y-4">
-                      {getComments(blog._id).map((comment, index) => (
-                        <div
-                          key={index}
-                          className="flex gap-4 text-sm text-gray-600"
-                        >
-                          <div className="flex flex-col">
-                            <span className="font-semibold text-gray-800">
-                              {comment.name || "You"} commented:
-                            </span>
-                            <span className="text-xs text-gray-500">
-                              {new Date(
-                                comment.createdAt
-                              ).toLocaleDateString() === "Invalid Date"
-                                ? "now"
-                                : `on ${new Date(
-                                    comment.createdAt
-                                  ).toLocaleDateString()} at ${new Date(
-                                    comment.createdAt
-                                  ).toLocaleTimeString()}`}
-                            </span>
-                          </div>
-                          <div>{comment.content}</div>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="flex justify-center items-center gap-2">
-                      <input
-                        type="text"
-                        placeholder="Add a comment"
-                        onChange={(e) => setComment(e.target.value)}
-                        className="mt-4 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-300"
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            handleAddComment(blog._id, e.target.value);
-                            e.target.value = "";
-                          }
-                        }}
-                      />
-                      <button
-                        onClick={() => handleAddComment(blog._id, comment)}
-                        className="bg-indigo-500 text-white px-4 mt-4 py-2 rounded hover:bg-indigo-600 transition-colors duration-300"
-                      >
-                        Add
-                      </button>
-                    </div>
-                  </div>
                 </div>
               </article>
             </div>
