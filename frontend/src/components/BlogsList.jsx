@@ -12,7 +12,6 @@ import { likeBlogLocally } from "../features/blogs/blogsSlice";
 import { selectAllLocalBlogs } from "../features/blogs/blogsSlice";
 import { getUser } from "../features/users/getUserSlice";
 import DangerAlert from "./DangerAlert";
-import { set } from "mongoose";
 
 const BlogsList = ({ toggleDanger }) => {
   const dispatch = useDispatch();
