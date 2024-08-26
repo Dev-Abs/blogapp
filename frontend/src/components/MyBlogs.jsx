@@ -168,6 +168,7 @@ const DrawerForm = ({ blogID, show, onClose, toggleSuccess }) => {
 
 const MyBlogs = ({ toggleSuccess }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { authorSpecificBlogs, loading, error } = useSelector(
     (state) => state.authorSpecificBlogs
   );
@@ -222,6 +223,10 @@ const MyBlogs = ({ toggleSuccess }) => {
     dispatch(deleteBlog(blogId));
     toggleSuccess("Blog Deleted Successfully! Reload to see.");
   };
+
+  const BlogClickHandle = (blog) => {
+    navigate(`/blog/${blog._id}`);
+  }
 
   return (
     <section className="pt-20 lg:pt-[120px] pb-10 lg:pb-20 bg-slate-200">

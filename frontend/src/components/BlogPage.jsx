@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import imagePlaceholder from "../assets/image_placeholder2.jpeg";
 import {
   fetchBlogs,
   addComment,
-  likeBlog,
-  unlikeBlog,
-  likeBlogLocally,
   selectAllBlogs,
 } from "../features/blogs/blogsSlice";
 import { getUser } from "../features/users/getUserSlice";
 
 const BlogPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { id } = useParams();
   const { blogs, loading, error } = useSelector(selectAllBlogs);
   const user = useSelector((state) => state.user.value);
@@ -83,11 +81,21 @@ const BlogPage = () => {
     return blog ? blog.likes.length : 0;
   };
 
+  const AuthorClickHandle = (authorId, authorName) => {
+    navigate(`/author/${authorId}`, { state: { authorId, authorName } });
+  };
+
   return (
     <div className="max-w-5xl mx-auto px-6 py-10 mt-[5%]">
       <header className="mb-8 text-center">
         <h1 className="text-2xl lg:text-5xl font-bold text-gray-900 mb-4 mt-6">{blog.title}</h1>
-        <p className="text-gray-500">By {blog.author.name}</p>
+        <p className="text-gray-500">By{" "}
+         <span
+         onClick={() => AuthorClickHandle(blog.author._id, blog.author.name)}
+         className="text-blue-500 cursor-pointer hover:text-blue-700 transition-colors duration-300"
+         >
+         {blog.author.name}
+          </span> </p>
         <p className="text-gray-600">
           Published on {new Date(blog.createdAt).toLocaleDateString()}
         </p>
