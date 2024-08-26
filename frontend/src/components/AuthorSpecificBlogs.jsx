@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAuthorSpecificBlogsById } from "../features/blogs/authorSpecificBlogsSlice";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { set } from "mongoose";
 
 const AuthorSpecificBlogs = () => {
   const { authorId } = useParams();
