@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAuthorSpecificBlogsById } from "../features/blogs/authorSpecificBlogsSlice";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -12,8 +12,6 @@ const AuthorSpecificBlogs = () => {
   const { authorSpecificBlogs, loading, error } = useSelector(
     (state) => state.authorSpecificBlogs
   );
-
-  // get author name from the  navigate(`/author/${authorId}`, { state: { authorId, authorName } }); in AuthorPage.jsx
   const {authorName} = location.state;
 
   

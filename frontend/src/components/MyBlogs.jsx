@@ -1,9 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
-import { likeBlogLocally } from "../features/blogs/blogsSlice";
 import { getUser } from "../features/users/getUserSlice";
-import { addComment, likeBlog, unlikeBlog } from "../features/blogs/blogsSlice";
 import {
   fetchAuthorSpecificBlogs,
   updateBlog,

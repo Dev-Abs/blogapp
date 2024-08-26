@@ -1,10 +1,8 @@
-// Signup.js
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signupUser } from "../features/users/signupSlice";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/blog.png";
-import SuccessAlert from "./SuccessAlert";
 const Signup = ({ toggleSuccess }) => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
@@ -35,28 +33,6 @@ const Signup = ({ toggleSuccess }) => {
   })
 
   return (
-    // <div>
-    //     <h1>Signup</h1>
-    //     <form onSubmit={handleSubmit}>
-    //         <div>
-    //             <label>Name:</label>
-    //             <input type="text" name="name" value={formData.name} onChange={handleChange} required />
-    //         </div>
-    //         <div>
-    //             <label>Email:</label>
-    //             <input type="email" name="email" value={formData.email} onChange={handleChange} required />
-    //         </div>
-    //         <div>
-    //             <label>Password:</label>
-    //             <input type="password" name="password" value={formData.password} onChange={handleChange} required />
-    //         </div>
-    //         <button type="submit">Signup</button>
-    //     </form>
-    //     {loading && <div>Loading...</div>}
-    //     {error && <div>Error: {error}</div>}
-    //     {value && <div>Signup successful!</div>}
-    // </div>
-
     <div className="flex min-h-full flex-1 flex-col lg:flex-row justify-center px-6 py-12 lg:px-8 mt-20 bg-slate-200">
   <div className="hidden lg:flex lg:w-1/2 lg:items-center lg:justify-center lg:pl-16">
     <img alt="Your Company" src={logo} className="h-24 w-auto" />

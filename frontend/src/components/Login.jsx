@@ -3,8 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../features/users/loginSlice";
 import logo from "../assets/blog.png";
-import { Link, useNavigate } from "react-router-dom";
-import SuccessAlert from "./SuccessAlert";
+import { useNavigate } from "react-router-dom";
 import DangerAlert from "./DangerAlert";
 
 const Login = ({ toggleSuccess }) => {
