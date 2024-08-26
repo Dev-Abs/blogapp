@@ -14,7 +14,7 @@ import { getUser } from "../features/users/getUserSlice";
 import DangerAlert from "./DangerAlert";
 import { set } from "mongoose";
 
-const BlogsList = () => {
+const BlogsList = ({ toggleDanger }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [alert, setAlert] = useState(false);
@@ -127,16 +127,9 @@ const BlogsList = () => {
     navigate(`/blog/${blog._id}`);
   };
 
-  setTimeout(() => {
-    if (alert)
-    setAlert(false);
-  }, 5000);
 
   return (
     <section className="pt-16 pb-24 bg-gray-100">
-      {
-        alert && <DangerAlert msg="You need to login to like a blog" />
-      }
       <div className="container mx-auto">
         <header className="text-center mb-12">
           <h1 className="text-4xl font-extrabold text-gray-800 mb-4">
@@ -197,7 +190,7 @@ const BlogsList = () => {
                       onClick={() => {
                         user._id
                           ? handleLike(blog._id)
-                          : setAlert(true);
+                          : toggleDanger();
                       }}
                       className="flex items-center text-indigo-500 hover:text-indigo-700 transition-colors duration-300"
                     >

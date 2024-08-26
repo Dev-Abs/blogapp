@@ -10,10 +10,12 @@ import Navbar from "./components/Navbar";
 import MyBlogs from "./components/MyBlogs";
 import Footer from "./components/Footer";
 import BlogPage from "./components/BlogPage";
+import DangerAlert from "./components/DangerAlert";
 
 function App() {
   const [alert,setAlert] = useState(false)
   const [message,setMessage] = useState("")
+  const [dangerAlert, setDangerAlert] = useState(false)
 
   const toggleSuccess = (msg) => {
     setMessage(msg);
@@ -21,10 +23,15 @@ function App() {
     closeAlert()
   }
 
+  const toggleDanger = () => {
+    setDangerAlert(!dangerAlert)
+    closeAlert()
+  }
+
   const closeAlert = () => {
     setTimeout(() => {
       setAlert(false)
-    }, 10000)
+    }, 7000)
   }
 
   return (
@@ -39,10 +46,11 @@ function App() {
       <Navbar />
         <div className="flex-grow">
       {alert && <SuccessAlert message={message } />}
+      {dangerAlert && <DangerAlert msg="You need to login to like a blog" />}
     <Routes>
     <Route path="/signup" element={<Signup toggleSuccess={toggleSuccess}/>} />
-    <Route path="/" element={<BlogList />} />
-    <Route path="/myblogs" element={<MyBlogs toggleSuccess={toggleSuccess} />} />
+    <Route path="/" element={<BlogList toggleDanger={toggleDanger} />} />
+    <Route path="/myblogs" element={<MyBlogs toggleSuccess={toggleSuccess} toggleDanger={toggleDanger} />} />
     <Route path="/createblog" element={<CreateBlog toggleSuccess={toggleSuccess} />} />
     <Route path="/signin" element={<Login toggleSuccess={toggleSuccess} />} />
     <Route path="/blog/:id" component={BlogPage} element={<BlogPage />} />
