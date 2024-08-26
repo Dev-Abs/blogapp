@@ -17,7 +17,8 @@ const Navbar = () => {
   useEffect(() => {
     token = localStorage.getItem("token");
     const handleScroll = () => {
-      if (window.scrollY > 50) { // mean
+      if (window.scrollY > 50) {
+        // mean
         setNavbarBackground(true);
       } else {
         setNavbarBackground(false);
@@ -43,39 +44,64 @@ const Navbar = () => {
       }`}
     >
       <div className="flex justify-center items-center gap-4">
-        <div className="text-4xl font-bold text-gray-800 hidden md:block">
+        <div
+          onClick={() => navigate("/")}
+          className="text-4xl font-bold text-gray-800 hidden md:block"
+        >
           BlogApp
         </div>
-        <img alt="Your Company" src={logo} className="mx-auto h-10 w-auto mt-1" />
+        <img
+          onClick={() => navigate("/")}
+          alt="Your Company"
+          src={logo}
+          className="mx-auto h-10 w-auto mt-1"
+        />
       </div>
       <div className="hidden sm:block sm:ml-6">
         <div className="hidden md:flex space-x-6">
-          <Link to="/" className="text-gray-800 hover:text-gray-600 transition-colors duration-300">
+          <Link
+            to="/"
+            className="text-gray-800 hover:text-gray-600 transition-colors duration-300"
+          >
             New Blogs
           </Link>
           {(user || token) && (
-            <Link to="/myblogs" className="text-gray-800 hover:text-gray-600 transition-colors duration-300">
+            <Link
+              to="/myblogs"
+              className="text-gray-800 hover:text-gray-600 transition-colors duration-300"
+            >
               My Blogs
             </Link>
           )}
           {(user || token) && (
-            <Link to="/createblog" className="text-gray-800 hover:text-gray-600 transition-colors duration-300">
+            <Link
+              to="/createblog"
+              className="text-gray-800 hover:text-gray-600 transition-colors duration-300"
+            >
               Create Blog
             </Link>
           )}
           {token && (
-            <button onClick={signOut} className="text-gray-800 hover:text-gray-600 transition-colors duration-300">
+            <button
+              onClick={signOut}
+              className="text-gray-800 hover:text-gray-600 transition-colors duration-300"
+            >
               Sign Out
             </button>
           )}
           {!token && (
-            <Link to="/signin" className="text-gray-800 hover:text-gray-600 transition-colors duration-300">
+            <Link
+              to="/signin"
+              className="text-gray-800 hover:text-gray-600 transition-colors duration-300"
+            >
               Sign In
             </Link>
           )}
           {!token && (
-            <Link to="/signup" 
-            className="text-gray-800 hover:text-gray-600 transition-colors duration-300">
+            <Link
+              to="/signup"
+              className="text-gray-800 hover:text-gray-600 transition-colors duration-300"
+            >
               Sign Up
             </Link>
           )}
