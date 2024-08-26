@@ -11,23 +11,17 @@ import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
 import { likeBlogLocally } from "../features/blogs/blogsSlice";
 import { selectAllLocalBlogs } from "../features/blogs/blogsSlice";
 import { getUser } from "../features/users/getUserSlice";
-import DangerAlert from "./DangerAlert";
 
 const BlogsList = ({ toggleDanger }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [alert, setAlert] = useState(false);
   const user = useSelector((state) => state.user.value);
   const { blogs, loading, error } = useSelector((state) => state.blogs);
   const localBlogs = useSelector(selectAllLocalBlogs);
-  // sort blogs by date
   const sortedBlogs = localBlogs
     .slice()
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   const [blogLikes, setBlogLikes] = useState([]);
-  const [comment, setComment] = useState("");
-  const [comments, setComments] = useState({});
-  const [liked, setLiked] = useState(false);
   
 
 
@@ -44,12 +38,6 @@ const BlogsList = ({ toggleDanger }) => {
         likes: blog.likes,
       }))
     );
-
-    const initialComments = {};
-    localBlogs.forEach((blog) => {
-      initialComments[blog._id] = blog.comments || [];
-    });
-    setComments(initialComments);
   }, [localBlogs]);
 
   const handleAddComment = (blogId, content) => {
