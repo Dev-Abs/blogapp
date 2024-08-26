@@ -165,7 +165,6 @@ const DrawerForm = ({ blogID, show, onClose, toggleSuccess }) => {
   );
 };
 
-
 const MyBlogs = ({ toggleSuccess }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -173,7 +172,9 @@ const MyBlogs = ({ toggleSuccess }) => {
     (state) => state.authorSpecificBlogs
   );
 
-  const sortedBlogs = authorSpecificBlogs.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  const sortedBlogs = authorSpecificBlogs
+    .slice()
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   const user = useSelector((state) => state.user.value);
   const [blogID, setBlogID] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -298,7 +299,7 @@ const MyBlogs = ({ toggleSuccess }) => {
   };
   const BlogClickHandle = (blog) => {
     navigate(`/blog/${blog._id}`);
-  }
+  };
 
   return (
     <section className="pt-20 lg:pt-[120px] pb-10 lg:pb-20">
@@ -313,32 +314,39 @@ const MyBlogs = ({ toggleSuccess }) => {
           </div>
         </div>
         {loading && <div>Loading...</div>}
-        {(!token) ? 
-        (
+        {!token ? (
           <div className="text-center mx-auto mb-[60px] lg:mb-20 max-w-[710px]">
             <span className="font-bold text-3xl z-10 text-primary block bg-gradient-to-r from-teal-400 to-blue-500 text-transparent bg-clip-text">
               Error Fetching Blogs
             </span>
           </div>
-        ) : null
-      }
+        ) : null}
         {sortedBlogs.length > 0 ? (
           <div className="flex flex-wrap -mx-4">
             {sortedBlogs.map((blog) => (
-              <div key={blog._id} className="w-full md:w-1/2 lg:w-1/3 px-4 mb-8">
-                              <article className="h-[432px] custom-scrollbar overflow-auto hover:animate-background hover:bg-[length:400%_400%] hover:[animation-duration:_4s] bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-[3px]  transitionbg-white shadow-lg rounded-lg  transform transition-transform hover:scale-105 hover:shadow-xl hover:shadow-indigo-500/50">
-                <div className="relative p-6 ounded-[10px] bg-white !pt-20 sm:p-6 flex flex-col">
-                  <span className="absolute top-4 left-4 bg-indigo-500 text-white text-xs font-semibold px-2 py-1 rounded">
-                    {blog.categories || "Unknown Category"}
-                  </span>
-                  <time
-                    dateTime={new Date(blog.createdAt).toISOString()}
-                    className="absolute top-4 right-4 bg-indigo-500 text-white text-xs px-2 py-1 rounded"
-                  >
-                    {new Date(blog.createdAt).toLocaleDateString() + ' ' +  new Date(blog.createdAt).toTimeString().slice(0, 5)}
-
-                  </time>
-                  <div className="mt-6 flex items-center gap-x-4 justify-between ">
+              <div
+                key={blog._id}
+                className="w-full md:w-1/2 lg:w-1/3 px-4 mb-8"
+              >
+                <article className="h-[432px] custom-scrollbar overflow-auto hover:animate-background hover:bg-[length:400%_400%] hover:[animation-duration:_4s] bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-[3px]  transitionbg-white shadow-lg rounded-lg  transform transition-transform hover:scale-105 hover:shadow-xl hover:shadow-indigo-500/50">
+                <img
+                  src={blog.image || "default_image_url.jpg"}
+                  alt={blog.title}
+                  className="w-full h-48 object-cover rounded-t-lg"
+                />
+                  <div className="relative p-6 ounded-[10px] bg-white !pt-20 sm:p-6 flex flex-col">
+                    <span className="absolute top-4 left-4 bg-indigo-500 text-white text-xs font-semibold px-2 py-1 rounded">
+                      {blog.categories || "Unknown Category"}
+                    </span>
+                    <time
+                      dateTime={new Date(blog.createdAt).toISOString()}
+                      className="absolute top-4 right-4 bg-indigo-500 text-white text-xs px-2 py-1 rounded"
+                    >
+                      {new Date(blog.createdAt).toLocaleDateString() +
+                        " " +
+                        new Date(blog.createdAt).toTimeString().slice(0, 5)}
+                    </time>
+                    <div className="mt-6 flex items-center gap-x-4 justify-between ">
                       <div>
                         <button
                           type="button"
@@ -355,62 +363,77 @@ const MyBlogs = ({ toggleSuccess }) => {
                           Delete
                         </button>
                       </div>
-                      {handleLiked(blog._id) && ( 
-                      <p
-                        className="flex items-center text-green-500 font-semibold"
-                      >
-                        Liked
-                      </p>
-                    )}
+                      {handleLiked(blog._id) && (
+                        <p className="flex items-center text-green-500 font-semibold">
+                          Liked
+                        </p>
+                      )}
                     </div>
-                  <h2 
-                  onClick={() => BlogClickHandle(blog)} 
-                  className="mt-8 text-2xl font-bold text-gray-800 hover:text-indigo-600 transition-colors duration-300 hover:cursor-pointer">{blog.title}</h2>
-                  <p
-                  onClick={() => BlogClickHandle(blog)} 
-                  className="mt-4 text-gray-600">{blog.body.length > 100 ? blog.body.slice(0, 100) + "..." : blog.body}</p>
-                  <div className="mt-6 justify-between flex items-center gap-x-4">
-                    <div className="flex justify-center items-center gap-x-4">
-                    <button
-                      onClick={() => handleLike(blog._id)}
-                      className="flex items-center text-indigo-500 hover:text-indigo-700 transition-colors duration-300"
+                    <h2
+                      onClick={() => BlogClickHandle(blog)}
+                      className="mt-8 text-2xl font-bold text-gray-800 hover:text-indigo-600 transition-colors duration-300 hover:cursor-pointer"
                     >
-                      <FaThumbsUp className="mr-1" /> {getLikes(blog._id)}
-                    </button>
-                    {handleLiked(blog._id) && ( 
-                      <button
-                        onClick={() => handleUnlike(blog._id)}
-                        className="flex items-center text-red-500 hover:text-red-700 transition-colors duration-300"
-                      >
-                        <FaThumbsDown className="mr-1" /> Unlike
-                      </button>
-                    )}
-                    </div>
-                    <div className="">
-                    <span className="mt-0.5 mr-5 p-2 bg-indigo-100 text-indigo-800 text-sm font-medium rounded-lg ">
-                        By {blog.author !== null ? blog.author.name : "Unknown"}
-                      </span>
-                  </div>
+                      {blog.title}
+                    </h2>
+                    <p
+                      onClick={() => BlogClickHandle(blog)}
+                      className="mt-4 text-gray-600"
+                    >
+                      {blog.body.length > 100
+                        ? blog.body.slice(0, 100) + "..."
+                        : blog.body}
+                    </p>
+                    <div className="mt-6 justify-between flex items-center gap-x-4">
+                      <div className="flex justify-center items-center gap-x-4">
+                        <button
+                          onClick={() => handleLike(blog._id)}
+                          className="flex items-center text-indigo-500 hover:text-indigo-700 transition-colors duration-300"
+                        >
+                          <FaThumbsUp className="mr-1" /> {getLikes(blog._id)}
+                        </button>
+                        {handleLiked(blog._id) && (
+                          <button
+                            onClick={() => handleUnlike(blog._id)}
+                            className="flex items-center text-red-500 hover:text-red-700 transition-colors duration-300"
+                          >
+                            <FaThumbsDown className="mr-1" /> Unlike
+                          </button>
+                        )}
+                      </div>
+                      <div className="">
+                        <span className="mt-0.5 mr-5 p-2 bg-indigo-100 text-indigo-800 text-sm font-medium rounded-lg ">
+                          By{" "}
+                          {blog.author !== null ? blog.author.name : "Unknown"}
+                        </span>
+                      </div>
                     </div>
 
-                    <h3 className="mt-6 text-sm font-medium text-gray-800">Comments</h3>
+                    <h3 className="mt-6 text-sm font-medium text-gray-800">
+                      Comments
+                    </h3>
                     <div className="mt-2 space-y-4">
                       {getComments(blog._id).map((comment, index) => (
-                        <div key={index} className="flex gap-4 text-sm text-gray-600">
+                        <div
+                          key={index}
+                          className="flex gap-4 text-sm text-gray-600"
+                        >
                           <div className="flex flex-col">
                             <span className="font-semibold text-gray-800">
                               {comment.name || "You"} commented:
                             </span>
                             <span className="text-xs text-gray-500">
-                              {new Date(comment.createdAt).toLocaleDateString() === "Invalid Date"
+                              {new Date(
+                                comment.createdAt
+                              ).toLocaleDateString() === "Invalid Date"
                                 ? "now"
-                                : `on ${new Date(comment.createdAt).toLocaleDateString()} at ${new Date(comment.createdAt).toLocaleTimeString()}`
-                              }
+                                : `on ${new Date(
+                                    comment.createdAt
+                                  ).toLocaleDateString()} at ${new Date(
+                                    comment.createdAt
+                                  ).toLocaleTimeString()}`}
                             </span>
                           </div>
-                          <div>
-                            {comment.content}
-                          </div>
+                          <div>{comment.content}</div>
                         </div>
                       ))}
                     </div>
@@ -426,7 +449,7 @@ const MyBlogs = ({ toggleSuccess }) => {
                       }}
                     />
                   </div>
-                  </article>
+                </article>
               </div>
             ))}
           </div>
