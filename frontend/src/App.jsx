@@ -13,6 +13,8 @@ import DangerAlert from "./components/DangerAlert";
 import AuthorSpecificBlogs from "./components/AuthorSpecificBlogs";
 import SubscriptionAlert from "./components/SubscriptionAlert";
 import PricingPage from "./components/PricingPage";
+import PaymentCancel from "./components/PaymentCancel";
+import PaymentSuccessful from "./components/PaymentSuccessful";
 
 function App() {
   const [alert,setAlert] = useState(false)
@@ -54,6 +56,8 @@ function App() {
       {dangerAlert && <DangerAlert msg="You need to login to like a blog" />}
       {<SubscriptionAlert alert={alert} />}
     <Routes>
+    <Route path="/cancel" element={<PaymentCancel />} />
+    <Route path="/success" element={<PaymentSuccessful />} />
     <Route path="/signup" element={<Signup toggleSuccess={toggleSuccess}/>} />
     <Route path="/" element={<BlogList toggleDanger={toggleDanger} />} />
     <Route path="/myblogs" element={<MyBlogs toggleSuccess={toggleSuccess} toggleDanger={toggleDanger} />} />
