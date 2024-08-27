@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Login from "./components/Login"
 import Signup from "./components/SignUp"
 import SuccessAlert from "./components/SuccessAlert";
@@ -19,6 +19,7 @@ function App() {
   const [message,setMessage] = useState("")
   const [dangerAlert, setDangerAlert] = useState(false)
 
+
   const toggleSuccess = (msg) => {
     setMessage(msg);
     setAlert(!alert)
@@ -29,6 +30,8 @@ function App() {
     setDangerAlert(!dangerAlert)
     closeAlert()
   }
+
+
 
   const closeAlert = () => {
     setTimeout(() => {
@@ -49,7 +52,7 @@ function App() {
         <div className="flex-grow">
       {alert && <SuccessAlert message={message } />}
       {dangerAlert && <DangerAlert msg="You need to login to like a blog" />}
-      <SubscriptionAlert />
+      {<SubscriptionAlert alert={alert} />}
     <Routes>
     <Route path="/signup" element={<Signup toggleSuccess={toggleSuccess}/>} />
     <Route path="/" element={<BlogList toggleDanger={toggleDanger} />} />

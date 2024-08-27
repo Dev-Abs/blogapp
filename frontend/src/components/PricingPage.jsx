@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 const PricingPage = () => {
-  const [isNavOpen, setIsNavOpen] = useState(false);
   const [billPlan, setBillPlan] = useState('monthly');
+  const navigate = useNavigate();
+  let token = localStorage.getItem('token');
 
-  const toggleNav = () => setIsNavOpen(!isNavOpen);
+  useEffect(() => {
+    token = localStorage.getItem('token');
+    });
+
   const toggleBillingPlan = () => {
     setBillPlan(billPlan === 'monthly' ? 'annually' : 'monthly');
   };
@@ -31,8 +36,8 @@ const PricingPage = () => {
   ];
 
   return (
-    <div className="container mx-auto antialiased text-gray-900 bg-white">
-
+    <div className="container mx-auto antialiased text-gray-900 ">
+        {token ? (
       <main className="mx-4 my-24">
         <div className="text-center">
           <h1 className="mb-4 text-2xl font-normal md:text-3xl lg:text-4xl">
@@ -104,7 +109,20 @@ const PricingPage = () => {
             </section>
           ))}
         </div>
-      </main>
+      </main>)
+      : <div className="text-center mt-20">
+        <h1 className="text-2xl font-semibold text-gray-800">You need to login to view this page</h1>
+        <p className="mt-4 text-gray-600">Please login to view the pricing plans</p>
+        {/* login button */}
+        <button
+          onClick={() => navigate('/signin')}
+          className="px-4 py-2 mt-4 text-white bg-indigo-600 rounded-md hover:bg-indigo-700"
+        >
+            Login
+        </button>
+        </div>
+}
+
     </div>
   );
 };
