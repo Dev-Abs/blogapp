@@ -40,7 +40,7 @@ const SubscriptionAlert = ({alert}) => {
               navigate("/pricing");
               handleClose();
             }}
-            className="font-semibold underline hover:no-underline"
+            className="font-semibold underline hover:no-underline cursor-pointer"
           >
             Subscribe now
           </a>
