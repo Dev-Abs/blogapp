@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-const PricingPage = () => {
+const PricingPage = ({ toggleDanger }) => {
   const [billPlan, setBillPlan] = useState('monthly');
   const navigate = useNavigate();
   let token = localStorage.getItem('token');
@@ -64,7 +64,7 @@ const PricingPage = () => {
         throw new Error("Checkout URL is undefined");
       }
     } catch (error) {
-      console.error("Error:", error);
+      toggleDanger('We are using a test payment gateway. Please try again later.');
     }
   };
   

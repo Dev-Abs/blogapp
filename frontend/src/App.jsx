@@ -19,6 +19,7 @@ import PaymentSuccessful from "./components/PaymentSuccessful";
 function App() {
   const [alert,setAlert] = useState(false)
   const [message,setMessage] = useState("")
+  const [dangerMsg, setDangerMsg] = useState("")
   const [dangerAlert, setDangerAlert] = useState(false)
 
 
@@ -28,7 +29,8 @@ function App() {
     closeAlert()
   }
 
-  const toggleDanger = () => {
+  const toggleDanger = (msg) => {
+    setDangerMsg(msg)
     setDangerAlert(!dangerAlert)
     closeAlert()
   }
@@ -53,7 +55,7 @@ function App() {
       <Navbar />
         <div className="flex-grow">
       {alert && <SuccessAlert message={message } />}
-      {dangerAlert && <DangerAlert msg="You need to login to like a blog" />}
+      {dangerAlert && <DangerAlert msg={dangerMsg} />}
       {<SubscriptionAlert alert={alert} />}
     <Routes>
     <Route path="/cancel" element={<PaymentCancel />} />
@@ -65,7 +67,7 @@ function App() {
     <Route path="/signin" element={<Login toggleSuccess={toggleSuccess} />} />
     <Route path="/blog/:id" component={BlogPage} element={<BlogPage />} />
     <Route path="/author/:authorId" element={<AuthorSpecificBlogs />} />
-    <Route path="/pricing" element={<PricingPage />} />
+    <Route path="/pricing" element={<PricingPage toggleDanger={toggleDanger} />} />
     </Routes>
     </div>
     <Footer />

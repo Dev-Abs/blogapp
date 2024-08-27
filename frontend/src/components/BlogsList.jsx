@@ -140,7 +140,7 @@ const BlogsList = ({ toggleDanger }) => {
                     <div className="flex items-center gap-x-4">
                       <button
                         onClick={() => {
-                          user._id ? handleLike(blog._id) : toggleDanger();
+                          user._id ? handleLike(blog._id) : toggleDanger('Please login to like the blog');
                         }}
                         className={`flex items-center ${
                           handleLiked(blog._id)
