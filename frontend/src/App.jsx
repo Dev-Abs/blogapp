@@ -11,6 +11,8 @@ import Footer from "./components/Footer";
 import BlogPage from "./components/BlogPage";
 import DangerAlert from "./components/DangerAlert";
 import AuthorSpecificBlogs from "./components/AuthorSpecificBlogs";
+import SubscriptionAlert from "./components/SubscriptionAlert";
+import PricingPage from "./components/PricingPage";
 
 function App() {
   const [alert,setAlert] = useState(false)
@@ -47,6 +49,7 @@ function App() {
         <div className="flex-grow">
       {alert && <SuccessAlert message={message } />}
       {dangerAlert && <DangerAlert msg="You need to login to like a blog" />}
+      <SubscriptionAlert />
     <Routes>
     <Route path="/signup" element={<Signup toggleSuccess={toggleSuccess}/>} />
     <Route path="/" element={<BlogList toggleDanger={toggleDanger} />} />
@@ -55,6 +58,7 @@ function App() {
     <Route path="/signin" element={<Login toggleSuccess={toggleSuccess} />} />
     <Route path="/blog/:id" component={BlogPage} element={<BlogPage />} />
     <Route path="/author/:authorId" element={<AuthorSpecificBlogs />} />
+    <Route path="/pricing" element={<PricingPage />} />
     </Routes>
     </div>
     <Footer />
