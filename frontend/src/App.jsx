@@ -65,7 +65,7 @@ function App() {
     <Route path="/myblogs" element={<MyBlogs toggleSuccess={toggleSuccess} toggleDanger={toggleDanger} />} />
     <Route path="/createblog" element={<CreateBlog toggleSuccess={toggleSuccess} />} />
     <Route path="/signin" element={<Login toggleSuccess={toggleSuccess} />} />
-    <Route path="/blog/:id" component={BlogPage} element={<BlogPage />} />
+    <Route path="/blog/:id" component={BlogPage} element={<BlogPage toggleDanger={toggleDanger} />} />
     <Route path="/author/:authorId" element={<AuthorSpecificBlogs />} />
     <Route path="/pricing" element={<PricingPage toggleDanger={toggleDanger} />} />
     </Routes>

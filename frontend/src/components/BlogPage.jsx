@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import imagePlaceholder from "../assets/image_placeholder2.jpeg";
+import { HiOutlineChevronRight } from "react-icons/hi";
 import {
   fetchBlogs,
   addComment,
@@ -9,7 +10,7 @@ import {
 } from "../features/blogs/blogsSlice";
 import { getUser } from "../features/users/getUserSlice";
 
-const BlogPage = () => {
+const BlogPage = ({ toggleDanger }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -20,10 +21,13 @@ const BlogPage = () => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState({});
 
+  let token = localStorage.getItem("token")
   useEffect(() => {
     dispatch(fetchBlogs());
     dispatch(getUser());
+    token = localStorage.getItem("token");
   }, [dispatch]);
+
 
   useEffect(() => {
     const currentBlog = blogs.find((blog) => blog._id === id);
@@ -48,11 +52,7 @@ const BlogPage = () => {
       </div>
     );
   if (error)
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <p>Please login to comment</p>
-      </div>
-    );
+    toggleDanger("An error occurred. Please try again later.");
 
   const blog = blogs.find((blog) => blog._id === id);
 
@@ -130,7 +130,7 @@ const BlogPage = () => {
               </div>
             ))}
 
-            <div className="flex justify-center items-center gap-2">
+{          token ?  <div className="flex justify-center items-center gap-2">
               <textarea
                 className="w-full p-2 border border-gray-300 rounded-lg"
                 placeholder="Write a comment..."
@@ -141,14 +141,32 @@ const BlogPage = () => {
                     e.target.value = "";
                   }
                 }}
+                rows={1}
               ></textarea>
               <button
                 onClick={() => handleAddComment(blog._id, comment)}
-                className="bg-indigo-500 text-white px-4 py-2 rounded-lg mt-2"
+                className="bg-indigo-500 text-white px-4 py-3 rounded-lg"
               >
-                Add Comment
+                <HiOutlineChevronRight />
               </button>
             </div>
+            : 
+            // please login to interact with the blog
+            <div className="flex justify-center items-center gap-2">
+              <textarea
+                className="w-full p-2 border border-gray-300 rounded-lg"
+                placeholder="Please login to add a comment"
+                rows={1}
+                disabled
+              ></textarea>
+              <button
+                className="bg-gray-300 text-white px-4 py-3 rounded-lg"
+                disabled
+              >
+                <HiOutlineChevronRight />
+              </button>
+            </div>
+            }
           </div>
         </div>
       </div>
