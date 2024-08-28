@@ -231,7 +231,7 @@ const MyBlogs = ({ toggleSuccess }) => {
         <div className="flex flex-wrap justify-center -mx-4">
           <div className="w-full px-4">
             <div className="text-center mx-auto mb-[60px] lg:mb-20 max-w-[710px]">
-              <span className="font-bold text-3xl text-primary block bg-gradient-to-r from-teal-400 to-blue-500 text-transparent bg-clip-text">
+              <span className="font-bold text-3xl text-gray-800 block">
                 {user.name ? `${user.name}'s Blogs` : "My Blogs"}
               </span>
             </div>
