@@ -11,6 +11,7 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import imagePlaceholder from "../assets/image_placeholder2.jpeg";
+import ConfirmModal from "./ConfirmModal";
 
 const DrawerForm = ({ blogID, show, onClose, toggleSuccess }) => {
   const dispatch = useDispatch();
@@ -163,48 +164,25 @@ const DrawerForm = ({ blogID, show, onClose, toggleSuccess }) => {
   );
 };
 
+
 const MyBlogs = ({ toggleSuccess }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { authorSpecificBlogs, loading, error } = useSelector(
-    (state) => state.authorSpecificBlogs
-  );
-
-  const sortedBlogs = authorSpecificBlogs
-    .slice()
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  const { authorSpecificBlogs, loading } = useSelector((state) => state.authorSpecificBlogs);
   const user = useSelector((state) => state.user.value);
   const [blogID, setBlogID] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [blogLikes, setBlogLikes] = useState([]);
-  const [comments, setComments] = useState({});
+  const [showConfirmModal, setShowConfirmModal] = useState(false); // Manage modal visibility
+  const [deleteBlogId, setDeleteBlogId] = useState(null);
+
+  const sortedBlogs = authorSpecificBlogs
+  .slice()
+  .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
   useEffect(() => {
     dispatch(fetchAuthorSpecificBlogs());
     dispatch(getUser());
   }, [dispatch]);
-
-  const [token, setToken] = useState(localStorage.getItem("token"));
-
-  useEffect(() => {
-    setToken(localStorage.getItem("token"));
-    if (authorSpecificBlogs.length === 0) return;
-    setBlogLikes(
-      authorSpecificBlogs.map((blog) => ({
-        blogId: blog._id,
-        likes: blog.likes,
-      }))
-    );
-  }, [authorSpecificBlogs]);
-
-  const getComments = (blogId) => {
-    return comments[blogId] || [];
-  };
-
-  const getLikes = (blogId) => {
-    const blog = blogLikes.find((blog) => blog.blogId === blogId);
-    return blog ? blog.likes.length : 0;
-  };
 
   const handleOpenDrawer = (ID) => () => {
     setBlogID(ID);
@@ -216,9 +194,33 @@ const MyBlogs = ({ toggleSuccess }) => {
     setDrawerOpen(false);
   };
 
-  const deleteBlogHandle = (blogId) => {
-    dispatch(deleteBlog(blogId));
-    toggleSuccess("Blog Deleted Successfully! Reload to see.");
+  const handleOpenConfirmModal = (blogId) => {
+    setDeleteBlogId(blogId);
+    setShowConfirmModal(true);
+  };
+
+  const handleCloseConfirmModal = () => {
+    setShowConfirmModal(false);
+    setDeleteBlogId(null);
+  };
+
+  const handleConfirmDelete = () => {
+    dispatch(deleteBlog(deleteBlogId));
+    toggleSuccess("Blog Deleted Successfully!");
+    handleCloseConfirmModal();
+    setTimeout(() => {
+      window.location.reload();
+    }, 3000);
+  };
+
+  const getLikes = (blogId) => {
+    const blog = authorSpecificBlogs.find((blog) => blog._id === blogId);
+    return blog ? blog.likes.length : 0;
+  };
+
+  const getComments = (blogId) => {
+    const blog = authorSpecificBlogs.find((blog) => blog._id === blogId);
+    return blog ? blog.comments.length : 0;
   };
 
   const BlogClickHandle = (blog) => {
@@ -238,27 +240,17 @@ const MyBlogs = ({ toggleSuccess }) => {
           </div>
         </div>
         {loading && <div>Loading...</div>}
-        {!token ? (
-          <div className="text-center mx-auto mb-[60px] lg:mb-20 max-w-[710px]">
-            <span className="font-bold text-3xl z-10 text-primary block bg-gradient-to-r from-teal-400 to-blue-500 text-transparent bg-clip-text">
-              Error Fetching Blogs
-            </span>
-          </div>
-        ) : null}
         {sortedBlogs.length > 0 ? (
           <div className="flex flex-wrap -mx-4">
             {sortedBlogs.map((blog) => (
-              <div
-                key={blog._id}
-                className="w-full md:w-1/2 lg:w-1/3 px-4 mb-16"
-              >
-                <article className="h-[470px] bg-white custom-scrollbar hover:animate-background hover:bg-[length:400%_400%] hover:[animation-duration:_4s] transitionbg-white shadow-lg rounded-lg  transform transition-transform hover:scale-105 hover:shadow-xl hover:shadow-indigo-500/50">
+              <div key={blog._id} className="w-full md:w-1/2 lg:w-1/3 px-4 mb-16">
+                <article className="h-[470px] bg-white shadow-lg rounded-lg transform transition-transform hover:scale-105 hover:shadow-xl">
                   <img
                     src={blog.featuredImage || imagePlaceholder}
                     alt={blog.title}
                     className="w-full h-48 object-cover rounded-t-lg bg-gray-300"
                   />
-                  <div className="relative p-3 ounded-[10px] bg-white !pt-20 sm:p-6 flex flex-col">
+                  <div className="relative p-3 bg-white pt-20 flex flex-col">
                     <span className="absolute top-4 left-4 bg-slate-500 text-white text-xs font-semibold px-2 py-1 rounded">
                       {blog.categories || "Unknown Category"}
                     </span>
@@ -275,14 +267,14 @@ const MyBlogs = ({ toggleSuccess }) => {
                         <button
                           type="button"
                           onClick={handleOpenDrawer(blog._id)}
-                          className="focus:outline-none text-white bg-green-600 font-small rounded-lg text-xs px-2 lg:px-5 py-2 me-2 mb-2 hover:bg-green-500"
+                          className="focus:outline-none mr-2 text-white bg-green-600 rounded-lg text-xs px-2 lg:px-5 py-2 hover:bg-green-500"
                         >
                           Update
                         </button>
                         <button
                           type="button"
-                          onClick={() => deleteBlogHandle(blog._id)}
-                          className="focus:outline-none text-white bg-red-600 font-medium rounded-lg text-xs px-2 lg:px-5 py-2 me-2 mb-2 hover:bg-red-500"
+                          onClick={() => handleOpenConfirmModal(blog._id)}
+                          className="focus:outline-none text-white bg-red-600 rounded-lg text-xs px-2 lg:px-5 py-2 hover:bg-red-500"
                         >
                           Delete
                         </button>
@@ -292,7 +284,7 @@ const MyBlogs = ({ toggleSuccess }) => {
                           {getLikes(blog._id)} likes
                         </p>
                         <p className="text-gray-500 ml-4">
-                          {getComments(blog._id).length} comments
+                          {getComments(blog._id)} comments
                         </p>
                       </div>
                     </div>
@@ -322,13 +314,18 @@ const MyBlogs = ({ toggleSuccess }) => {
             </span>
           </div>
         )}
+        <DrawerForm
+          blogID={blogID}
+          show={drawerOpen}
+          onClose={handleCloseDrawer}
+          toggleSuccess={toggleSuccess}
+        />
+        <ConfirmModal
+          show={showConfirmModal}
+          onClose={handleCloseConfirmModal}
+          onConfirm={handleConfirmDelete}
+        />
       </div>
-      <DrawerForm
-        blogID={blogID}
-        show={drawerOpen}
-        onClose={handleCloseDrawer}
-        toggleSuccess={toggleSuccess}
-      />
     </section>
   );
 };
