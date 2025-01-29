@@ -41,7 +41,7 @@ const CreateBlog = ({ toggleSuccess }) => {
   return (
     token ? (
       <section className="pt-20 bg-slate-200 min-h-screen">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 flex flex-col items-center">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-3xl font-bold leading-tight text-slate-900">
               Create a Blog
@@ -50,7 +50,7 @@ const CreateBlog = ({ toggleSuccess }) => {
               Share your thoughts with the world
             </p>
           </div>
-          <div className="max-w-3xl mx-auto p-8 bg-slate-300 rounded-lg shadow-lg">
+          <div className="max-w-3xl mx-auto p-8 bg-slate-300 rounded-lg shadow-lg mb-28 w-full">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-4">
                 <div>
